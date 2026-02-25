@@ -23,6 +23,7 @@ const platformHTML = fs.readFileSync(htmlFilePath, "utf-8");
 // ─── Middleware ───────────────────────────────────────────────
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 // ─── Routes ──────────────────────────────────────────────────
 
@@ -244,6 +245,7 @@ function adminPage() {
     background-image:radial-gradient(ellipse at 50% 0%,rgba(0,114,255,0.08) 0%,transparent 60%)}
   .container{width:100%;max-width:500px}
   .header{text-align:center;margin-bottom:40px}
+  .header-logo{width:72px;height:72px;margin:0 auto 14px}
   .logo{font-size:32px;font-weight:800;letter-spacing:-0.5px;
     background:linear-gradient(135deg,#00c6ff,#0072ff);-webkit-background-clip:text;
     -webkit-text-fill-color:transparent;margin-bottom:6px}
@@ -306,6 +308,7 @@ function adminPage() {
 
 <div class="container">
   <div class="header">
+    <img src="/logo.png" alt="DigiBull" class="header-logo">
     <div class="logo">DigiBull</div>
     <p class="sub">Magic Link Admin</p>
   </div>
