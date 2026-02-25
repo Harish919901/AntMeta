@@ -2196,9 +2196,9 @@ function App() {
       <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(ellipse 90% 60% at 65% 10%,rgba(0,147,182,.08) 0%,transparent 55%),radial-gradient(ellipse 50% 50% at 5% 90%,rgba(30,58,95,.25) 0%,transparent 55%),linear-gradient(180deg,#04101E,#030B16)" }} />
       <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(0,147,182,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,147,182,.03) 1px,transparent 1px)", backgroundSize: "44px 44px" }} />
 
-      <div style={{ display: "flex", height: "100dvh", position: "relative", zIndex: 1 }}>
+      <div style={{ display: "flex", height: "100vh", position: "relative", zIndex: 1 }}>
         {/* ── Sidebar ── */}
-        <aside style={{ width: 258, minWidth: 258, background: C.bgs, borderRight: `1px solid ${C.bd}`, display: "flex", flexDirection: "column", overflowY: "auto", overflowX: "hidden", position: "relative", zIndex: 20 }}>
+        <aside style={{ width: 258, minWidth: 258, background: C.bgs, borderRight: `1px solid ${C.bd}`, display: "flex", flexDirection: "column", overflow: "hidden", position: "relative", zIndex: 20 }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg,transparent 5%,${C.p} 50%,transparent 95%)`, opacity: 0.7 }} />
           
           {/* Logo */}
