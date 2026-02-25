@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(cd:*)",
-      "Bash(true:*)"
+      "Bash(true:*)",
+      "Bash(wc:*)",
+      "Bash(diff:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(sleep 2:*)",
+      "Bash(curl:*)"
     ]
   }
 }
