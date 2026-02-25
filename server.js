@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Admin secret to generate magic links (set in Render env vars)
-const ADMIN_SECRET = process.env.ADMIN_SECRET || "antmeta-admin-2024";
+const ADMIN_SECRET = process.env.ADMIN_SECRET || "digibull-admin-2024";
 
 // Default link lifetime: 2 hours (in milliseconds)
 const DEFAULT_TTL_MS = 2 * 60 * 60 * 1000;
@@ -132,13 +132,13 @@ app.get("/view/:token", (req, res) => {
   const banner = `
 <div id="magic-link-banner" style="
   position:fixed; top:0; left:0; right:0; z-index:99999;
-  background:linear-gradient(90deg,#0093B6,#1E3A5F);
+  background:linear-gradient(90deg,#0072ff,#00c6ff);
   color:#fff; text-align:center; padding:8px 16px;
   font-family:Inter,sans-serif; font-size:13px;
   box-shadow:0 2px 8px rgba(0,0,0,0.3);
 ">
   Preview link — expires in ~${mins} min&nbsp;|&nbsp;
-  <span style="opacity:0.7">Shared by AntMeta</span>
+  <span style="opacity:0.7">Shared by DigiBull</span>
   <script>
     (function(){
       var exp = ${link.expiresAt};
@@ -151,7 +151,7 @@ app.get("/view/:token", (req, res) => {
         } else {
           var m = Math.ceil(left/60000);
           document.getElementById('magic-link-banner').innerHTML =
-            'Preview link — expires in ~' + m + ' min | <span style=\"opacity:0.7\">Shared by AntMeta</span>';
+            'Preview link — expires in ~' + m + ' min | <span style=\"opacity:0.7\">Shared by DigiBull</span>';
         }
       }, 30000);
     })();
@@ -194,8 +194,8 @@ setInterval(() => {
 // ─── Start Server ────────────────────────────────────────────
 
 app.listen(PORT, () => {
-  console.log(`\n  AntMeta Magic Link Server`);
-  console.log(`  ─────────────────────────`);
+  console.log(`\n  DigiBull Magic Link Server`);
+  console.log(`  ──────────────────────────`);
   console.log(`  Running on port ${PORT}`);
   console.log(`  Admin panel: http://localhost:${PORT}/admin`);
   console.log(`  Admin secret: ${ADMIN_SECRET.slice(0, 4)}****\n`);
@@ -206,7 +206,8 @@ app.listen(PORT, () => {
 function expiredPage(message) {
   return `<!DOCTYPE html>
 <html><head>
-<meta charset="utf-8"><title>Link Expired — AntMeta</title>
+<meta charset="utf-8"><title>Link Expired — DigiBull</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   body{min-height:100vh;display:flex;align-items:center;justify-content:center;
@@ -216,11 +217,13 @@ function expiredPage(message) {
     max-width:440px}
   h1{font-size:22px;margin-bottom:12px;color:#e74c3c}
   p{font-size:15px;opacity:0.7;line-height:1.6}
-  .logo{font-size:28px;font-weight:700;margin-bottom:24px;color:#0093B6}
+  .logo{font-size:28px;font-weight:800;margin-bottom:24px;
+    background:linear-gradient(135deg,#00c6ff,#0072ff);-webkit-background-clip:text;
+    -webkit-text-fill-color:transparent}
 </style>
 </head><body>
 <div class="box">
-  <div class="logo">AntMeta</div>
+  <div class="logo">DigiBull</div>
   <h1>${message}</h1>
   <p>This preview link is no longer available.<br>
   Contact the sender for a new link.</p>
@@ -231,88 +234,140 @@ function expiredPage(message) {
 function adminPage() {
   return `<!DOCTYPE html>
 <html><head>
-<meta charset="utf-8"><title>AntMeta Magic Link Admin</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DigiBull Magic Link Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{min-height:100vh;background:#04101E;font-family:Inter,sans-serif;color:#fff;padding:40px}
-  h1{font-size:24px;color:#0093B6;margin-bottom:8px}
-  .sub{font-size:14px;opacity:0.5;margin-bottom:32px}
-  .card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-    border-radius:12px;padding:24px;margin-bottom:24px;max-width:520px}
-  label{display:block;font-size:13px;opacity:0.6;margin-bottom:6px;margin-top:16px}
-  input,select{width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);
-    background:rgba(255,255,255,0.06);color:#fff;font-size:14px;outline:none}
-  input:focus{border-color:#0093B6}
-  button{margin-top:20px;padding:10px 24px;border:none;border-radius:8px;
-    background:#0093B6;color:#fff;font-size:14px;cursor:pointer;font-weight:600}
-  button:hover{background:#00a8d4}
-  .result{margin-top:16px;padding:14px;background:rgba(0,147,182,0.1);
-    border:1px solid rgba(0,147,182,0.3);border-radius:8px;word-break:break-all;display:none}
-  .result a{color:#0093B6;text-decoration:none;font-weight:600}
-  .result .exp{font-size:12px;opacity:0.5;margin-top:6px}
-  #links-list{margin-top:12px}
-  .link-item{padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;
-    margin-bottom:8px;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+  body{min-height:100vh;background:#04101E;font-family:Inter,sans-serif;color:#fff;
+    display:flex;flex-direction:column;align-items:center;padding:48px 20px;
+    background-image:radial-gradient(ellipse at 50% 0%,rgba(0,114,255,0.08) 0%,transparent 60%)}
+  .container{width:100%;max-width:500px}
+  .header{text-align:center;margin-bottom:40px}
+  .logo{font-size:32px;font-weight:800;letter-spacing:-0.5px;
+    background:linear-gradient(135deg,#00c6ff,#0072ff);-webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;margin-bottom:6px}
+  .sub{font-size:14px;opacity:0.45;font-weight:400}
+  .card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+    border-radius:16px;padding:28px;margin-bottom:20px;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  .card h3{font-size:16px;font-weight:700;margin-bottom:4px;color:#fff}
+  .card .card-sub{font-size:12px;opacity:0.35;margin-bottom:16px}
+  label{display:block;font-size:12px;font-weight:600;opacity:0.5;margin-bottom:6px;
+    margin-top:18px;text-transform:uppercase;letter-spacing:0.5px}
+  label:first-of-type{margin-top:0}
+  input,select{width:100%;padding:11px 14px;border-radius:10px;
+    border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);
+    color:#fff;font-size:14px;font-family:Inter,sans-serif;outline:none;
+    transition:border-color 0.2s,box-shadow 0.2s}
+  input:focus,select:focus{border-color:rgba(0,114,255,0.5);
+    box-shadow:0 0 0 3px rgba(0,114,255,0.1)}
+  input::placeholder{color:rgba(255,255,255,0.25)}
+  select option{background:#0a1929;color:#fff}
+  .btn-primary{width:100%;margin-top:22px;padding:12px 24px;border:none;border-radius:10px;
+    background:linear-gradient(135deg,#0072ff,#00c6ff);color:#fff;font-size:14px;
+    cursor:pointer;font-weight:700;letter-spacing:0.3px;
+    transition:opacity 0.2s,transform 0.15s}
+  .btn-primary:hover{opacity:0.9;transform:translateY(-1px)}
+  .btn-primary:active{transform:translateY(0)}
+  .btn-secondary{margin-top:10px;padding:9px 20px;border:none;border-radius:8px;
+    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+    color:#fff;font-size:13px;cursor:pointer;font-weight:600;
+    transition:background 0.2s}
+  .btn-secondary:hover{background:rgba(255,255,255,0.1)}
+  .result{margin-top:18px;padding:16px;background:rgba(0,114,255,0.08);
+    border:1px solid rgba(0,114,255,0.2);border-radius:12px;
+    word-break:break-all;display:none}
+  .result a{color:#00c6ff;text-decoration:none;font-weight:600;font-size:13px}
+  .result a:hover{text-decoration:underline}
+  .result .exp{font-size:11px;opacity:0.4;margin-top:8px}
+  #links-list{margin-top:14px}
+  .link-item{padding:14px 16px;background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.06);border-radius:12px;
+    margin-bottom:10px;font-size:13px;display:flex;justify-content:space-between;
+    align-items:center;transition:background 0.2s}
+  .link-item:hover{background:rgba(255,255,255,0.05)}
   .link-item .info{flex:1}
-  .link-item .label{font-weight:600;color:#0093B6}
-  .link-item .meta{opacity:0.5;font-size:12px;margin-top:4px}
-  .revoke-btn{background:#e74c3c;border:none;color:#fff;padding:6px 12px;
-    border-radius:6px;cursor:pointer;font-size:12px}
-  .copy-btn{background:#1E3A5F;border:none;color:#fff;padding:6px 12px;
-    border-radius:6px;cursor:pointer;font-size:12px;margin-right:8px}
+  .link-item .label{font-weight:700;color:#00c6ff}
+  .link-item .meta{opacity:0.4;font-size:11px;margin-top:4px}
+  .link-actions{display:flex;gap:6px}
+  .copy-btn{background:rgba(0,114,255,0.15);border:1px solid rgba(0,114,255,0.25);
+    color:#00c6ff;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;
+    font-weight:600;transition:background 0.2s}
+  .copy-btn:hover{background:rgba(0,114,255,0.25)}
+  .revoke-btn{background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.25);
+    color:#e74c3c;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;
+    font-weight:600;transition:background 0.2s}
+  .revoke-btn:hover{background:rgba(231,76,60,0.22)}
+  .empty-state{text-align:center;padding:20px;opacity:0.3;font-size:13px}
+  .divider{height:1px;background:rgba(255,255,255,0.06);margin:20px 0}
 </style>
 </head><body>
 
-<h1>AntMeta Magic Link Admin</h1>
-<p class="sub">Generate temporary preview links for clients</p>
+<div class="container">
+  <div class="header">
+    <div class="logo">DigiBull</div>
+    <p class="sub">Magic Link Admin</p>
+  </div>
 
-<div class="card">
-  <h3>Generate New Link</h3>
-  <label>Admin Secret</label>
-  <input type="password" id="secret" placeholder="Enter admin secret">
-  <label>Client / Label</label>
-  <input type="text" id="label" placeholder="e.g. Acme Corp Demo">
-  <label>Expires in</label>
-  <select id="ttl">
-    <option value="30">30 minutes</option>
-    <option value="60">1 hour</option>
-    <option value="120" selected>2 hours</option>
-    <option value="240">4 hours</option>
-    <option value="480">8 hours</option>
-    <option value="1440">24 hours</option>
-  </select>
-  <button onclick="generate()">Generate Magic Link</button>
-  <div class="result" id="result"></div>
-</div>
+  <div class="card">
+    <h3>Generate New Link</h3>
+    <div class="card-sub">Create a temporary preview link for your client</div>
+    <label>Admin Secret</label>
+    <input type="password" id="secret" placeholder="Enter admin secret">
+    <label>Client / Label</label>
+    <input type="text" id="label" placeholder="e.g. Acme Corp Demo">
+    <label>Expires in</label>
+    <select id="ttl">
+      <option value="30">30 minutes</option>
+      <option value="60">1 hour</option>
+      <option value="120" selected>2 hours</option>
+      <option value="240">4 hours</option>
+      <option value="480">8 hours</option>
+      <option value="1440">24 hours</option>
+    </select>
+    <button class="btn-primary" onclick="generate()">Generate Magic Link</button>
+    <div class="result" id="result"></div>
+  </div>
 
-<div class="card">
-  <h3>Active Links</h3>
-  <button onclick="loadLinks()" style="margin-top:8px;background:#1E3A5F">Refresh</button>
-  <div id="links-list"><p style="opacity:0.4;margin-top:12px;font-size:13px">Click refresh to load</p></div>
+  <div class="card">
+    <h3>Active Links</h3>
+    <div class="card-sub">Manage all currently active preview links</div>
+    <button class="btn-secondary" onclick="loadLinks()">Refresh Links</button>
+    <div id="links-list"><p class="empty-state">Click refresh to load active links</p></div>
+  </div>
 </div>
 
 <script>
 function getSecret(){ return document.getElementById('secret').value; }
 
 async function generate(){
-  const res = await fetch('/api/generate',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      secret: getSecret(),
-      label: document.getElementById('label').value,
-      ttlMinutes: parseInt(document.getElementById('ttl').value)
-    })
-  });
-  const data = await res.json();
-  const el = document.getElementById('result');
-  if(res.ok){
-    el.style.display='block';
-    el.innerHTML = '<a href="'+data.url+'" target="_blank">'+data.url+'</a>'
-      +'<div class="exp">Expires: '+data.expiresAt+' ('+data.ttlMinutes+' min)</div>';
-  } else {
-    el.style.display='block';
-    el.innerHTML = '<span style="color:#e74c3c">'+data.error+'</span>';
+  const btn = document.querySelector('.btn-primary');
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('/api/generate',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        secret: getSecret(),
+        label: document.getElementById('label').value,
+        ttlMinutes: parseInt(document.getElementById('ttl').value)
+      })
+    });
+    const data = await res.json();
+    const el = document.getElementById('result');
+    if(res.ok){
+      el.style.display='block';
+      el.innerHTML = '<a href="'+data.url+'" target="_blank">'+data.url+'</a>'
+        +'<div class="exp">Expires: '+data.expiresAt+' ('+data.ttlMinutes+' min)</div>';
+    } else {
+      el.style.display='block';
+      el.innerHTML = '<span style="color:#e74c3c">'+data.error+'</span>';
+    }
+  } finally {
+    btn.textContent = 'Generate Magic Link';
+    btn.disabled = false;
   }
 }
 
@@ -324,16 +379,17 @@ async function loadLinks(){
   });
   const data = await res.json();
   const el = document.getElementById('links-list');
-  if(!res.ok){ el.innerHTML='<p style="color:#e74c3c">'+data.error+'</p>'; return; }
-  if(!data.activeLinks.length){ el.innerHTML='<p style="opacity:0.4;font-size:13px;margin-top:12px">No active links</p>'; return; }
+  if(!res.ok){ el.innerHTML='<p style="color:#e74c3c;text-align:center;padding:16px">'+data.error+'</p>'; return; }
+  if(!data.activeLinks.length){ el.innerHTML='<p class="empty-state">No active links</p>'; return; }
   el.innerHTML = data.activeLinks.map(l =>
     '<div class="link-item"><div class="info">'
     +'<div class="label">'+l.label+'</div>'
     +'<div class="meta">'+l.remainingMinutes+' min left · '+l.accessCount+' views</div>'
     +'</div>'
+    +'<div class="link-actions">'
     +'<button class="copy-btn" onclick="navigator.clipboard.writeText(location.origin+\\'/view/'+l.token+'\\')">Copy</button>'
     +'<button class="revoke-btn" onclick="revoke(\\''+l.token+'\\')">Revoke</button>'
-    +'</div>'
+    +'</div></div>'
   ).join('');
 }
 
